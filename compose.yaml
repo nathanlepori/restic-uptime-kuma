@@ -1,0 +1,12 @@
+services:
+  restic-monitoring:
+    build:
+      context: .
+      dockerfile: Containerfile
+    restart: unless-stopped
+    environment:
+      - PUSH_BASE_URL
+      - INTERVAL
+      - AWS_ACCESS_KEY_ID
+      - AWS_SECRET_ACCESS_KEY
+      - RESTIC_PASSWORD
