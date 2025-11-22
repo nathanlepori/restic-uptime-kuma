@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 
 # Environment variables
 if [ -z "$PUSH_BASE_URL" ]; then
@@ -15,7 +16,7 @@ INTERVAL="${INTERVAL:-43200}"  # Default to 12 hours in seconds
 
 check_backup_status() {
     # Get latest snapshot timestamp
-    latest_snapshot=$(/usr/bin/restic -r s3:https://s3.swiss-backup04.infomaniak.com/restic snapshots --json latest | jq -r '.[].time')
+    latest_snapshot=$(/usr/bin/restic snapshots --json latest | jq -r '.[].time')
     
     if [ -z "$latest_snapshot" ]; then
         echo "Error: Could not get latest snapshot time"
@@ -25,9 +26,12 @@ check_backup_status() {
     echo "Latest snapshot time: $latest_snapshot" >&2
     
     # Convert snapshot time to unix timestamp
-    # Strip fractional seconds, change date and time separator from "T" to " " and strip timezone
-    normalized=$(echo "$latest_snapshot" | sed -E 's/\.[0-9]+//; s/T/ /; s/([+-][0-9]{2}):([0-9]{2})$//')
-    
+    # - Change date and time separator from "T" to " "
+    # - Strip fractional seconds
+    # - Strip "Z" UTC indicator if present
+    # - Strip timezone if present
+    normalized=$(echo "$latest_snapshot" | sed -E 's/T/ /; s/\.[0-9]+//; s/Z$//; s/([+-][0-9]{2}):([0-9]{2})$//')
+
     echo "Normalized snapshot time: $normalized" >&2
 
     # Parse to unix seconds

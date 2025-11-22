@@ -1,5 +1,5 @@
 services:
-  restic-monitoring:
+  monitor:
     build:
       context: .
       dockerfile: Containerfile
@@ -9,4 +9,5 @@ services:
       - INTERVAL
       - AWS_ACCESS_KEY_ID
       - AWS_SECRET_ACCESS_KEY
+      - RESTIC_REPOSITORY
       - RESTIC_PASSWORD
