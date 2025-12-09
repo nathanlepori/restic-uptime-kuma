@@ -1,5 +1,4 @@
 #!/bin/bash
-set -e
 
 # Environment variables
 if [ -z "$PUSH_BASE_URL" ]; then
@@ -39,13 +38,13 @@ check_backup_status() {
     
     echo "Snapshot timestamp: $snapshot_timestamp" >&2
 
-
     current_timestamp=$(date +%s)
     
     # Calculate difference in hours
     diff_hours=$(( ($current_timestamp - $snapshot_timestamp) / 3600 ))
     
     echo "Difference in hours: $diff_hours" >&2
+
     if [ $diff_hours -lt 24 ]; then
         echo "Last backup is recent (< 24h old)"
         return 0
