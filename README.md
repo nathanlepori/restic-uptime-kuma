@@ -4,7 +4,7 @@ This project provides a monitoring solution for Restic backups using Uptime Kuma
 
 ## Usage
 
-First create a push monitor on Uptime Kuma and set the heartbeat to the desired interval (43200 seconds or 12 hours by default). Note down the push URL.
+First create a push monitor on Uptime Kuma and set the heartbeat to the desired interval to check for a heartbeat, for example 86400 seconds or 24 hours. Note down the push URL.
 
 To run the monitoring service, you can use Docker Compose. Make sure you have Docker and Docker Compose installed on your machine.
 
@@ -32,7 +32,7 @@ To run the monitoring service, you can use Docker Compose. Make sure you have Do
 ## Required Variables
 
 - `PUSH_BASE_URL`: The Uptime Kuma push URL **without query parameters**.
-- `INTERVAL`: Heartbeat interval in seconds. Default: 43200 (12 hours)
+- `INTERVAL`: Heartbeat interval in seconds. Must be shorter than the interval set in Uptime Kuma to avoid missed heartbeats. Default: 43200 (12 hours)
 - `AWS_ACCESS_KEY_ID`: Your Restic repository S3 access key ID.
 - `AWS_SECRET_ACCESS_KEY`: Your Restic repository S3 secret access key.
 - `RESTIC_PASSWORD`: The password for your Restic repository.
