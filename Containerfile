@@ -1,4 +1,6 @@
-FROM docker.io/restic/restic:latest
+ARG RESTIC_TAG=latest
+
+FROM docker.io/restic/restic:${RESTIC_TAG}
 
 # Install required packages
 RUN apk add --no-cache curl
